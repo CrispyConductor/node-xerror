@@ -115,7 +115,7 @@ XError.wrap = function(error, message) {
 };
 
 XError.registerErrorCode = registry.registerErrorCode;
-XError.getErrorCode = XError.getErrorCodeData = registry.getErrorCode;
+XError.getErrorCode = registry.getErrorCode;
 XError.listErrorCodes = registry.listErrorCodes;
 
 XError.create = XError.wrap;
