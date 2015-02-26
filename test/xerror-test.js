@@ -95,5 +95,13 @@ describe('XError', function() {
 		expect(error.message).to.equal('Test Error');
 		done();
 	});
+
+	it('should follow aliases', function(done) {
+		XError.registerErrorCode('not_found2', { aliasOf: XError.NOT_FOUND });
+		var error = new XError(XError.NOT_FOUND2);
+		expect(error.code).to.equal('not_found');
+		expect(error.message).to.equal('Not Found');
+		done();
+	});
 });
 
