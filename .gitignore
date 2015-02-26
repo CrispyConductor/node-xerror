@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+Node_Framework.sublime-project
+Node_Framework.sublime-workspace
+project.sublime-project
+project.sublime-workspace
+logs
+/config-*.js
+/test.log
+
+/.last_linter_success
+
+/test*.js
+
+*.swp
+
+coverage
