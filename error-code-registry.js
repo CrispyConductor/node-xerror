@@ -50,6 +50,18 @@ exports.registerErrorCode = function(code, fields, version) {
 };
 
 /**
+ * Register multiple error codes at the same time.
+ *
+ * @param {Object} codes - Mapping from code strings to fields
+ * @param {Number} version
+ */
+exports.registerErrorCodes = function(codes, version) {
+	for(var code in codes) {
+		exports.registerErrorCode(code, codes[code], version);
+	}
+};
+
+/**
  * Fetches information about error codes.  The returned object may include the fields
  * 'code' (useful if the error code is aliased to a different code), 'message' (default
  * error message), 'http' (associated http code).  Any of these fields may be missing.

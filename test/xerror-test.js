@@ -103,5 +103,25 @@ describe('XError', function() {
 		expect(error.message).to.equal('Not Found');
 		done();
 	});
+
+	it('should convert to and from objects', function(done) {
+		var cause = new XError(XError.NOT_FOUND, 'Thingy not found', null, { privateStuff: 'foo' });
+		var error = new XError(XError.INTERNAL_ERROR, cause);
+		var errorObj = error.toObject();
+		expect(errorObj.code).to.equal('internal_error');
+		expect(errorObj.message).to.equal('Thingy not found');
+		expect(errorObj.cause).to.exist;
+		expect(errorObj.cause.code).to.equal('not_found');
+		expect(errorObj.cause.data).to.not.exist;
+		expect(errorObj.cause.privateData).to.not.exist;
+		var newError = XError.fromObject(errorObj);
+		expect(newError.code).to.equal('internal_error');
+		expect(newError.message).to.equal('Thingy not found');
+		expect(newError.cause).to.exist;
+		expect(newError.cause.code).to.equal('not_found');
+		expect(newError.cause.data).to.not.exist;
+		expect(newError.cause.privateData).to.not.exist;
+		done();
+	});
 });
 

@@ -93,6 +93,12 @@ var error = new XError(XError.MY_CUSTOM_CODE, ...);
 
 // Register an alias of another error code
 XError.registerErrorCode('item_missing', { aliasOf: XError.NOT_FOUND });
+
+// Register multiple at once
+XError.registerErrorCodes({
+	custom_code_1: { message: 'Message for Custom Code 1' },
+	custom_code_2: { message: 'Message for Custom Code 2' }
+});
 ````
 
 You can also fetch these informational object about error codes:

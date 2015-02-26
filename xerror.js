@@ -27,8 +27,8 @@ function XError(/*code, message, data, privateData, cause*/) {
 				data = cause;
 			}
 			cause = arg;
-		} else if(typeof arg == 'string' || typeof arg == 'number') {
-			if(typeof arg != 'string') arg = '' + arg;
+		} else if(typeof arg === 'string' || typeof arg === 'number') {
+			if(typeof arg !== 'string') arg = '' + arg;
 			if(code === undefined && arg.indexOf(' ') == -1) code = arg;
 			else if(message === undefined) message = arg;
 			else if(data === undefined) data = arg;
@@ -66,6 +66,17 @@ function XError(/*code, message, data, privateData, cause*/) {
 	Object.defineProperty(this, '_isXError', { configurable: false, enumerable: false, writable: false, value: true });
 }
 
+// Inherit from Error
+XError.super_ = Error;
+XError.prototype = Object.create(Error.prototype, {
+  constructor: {
+    value: XError,
+    enumerable: false,
+    writable: true,
+    configurable: true
+  }
+});
+
 // Register code accessors on the error object
 registry.listErrorCodes().forEach(function(code) {
 	XError[code.toUpperCase()] = code;
@@ -83,6 +94,60 @@ XError.prototype.toString = function() {
 	if(this.data) str += ' -- ' + JSON.stringify(this.data);
 	if(this.cause) str += ' -- ' + JSON.stringify(this.cause);
 	return str;
+};
+
+/**
+ * Converts the information inside this XError object into a plain object suitable
+ * for stringifying or otherwise transmitting.
+ *
+ * @param {Object} [options] - Options regarding the conversion
+ * @param {Boolean} [options.includePrivateData]
+ * @param {Boolean} [options.includeStack]
+ * @param {String[]} [options.extraFields] - Extra fields to include in the object
+ * @return {Object}
+ */
+XError.prototype.toObject = function(options) {
+	if(!options) options = {};
+	var obj = {};
+	var i;
+	if(this.code) obj.code = this.code;
+	if(this.message) obj.message = this.message;
+	if(this.data) obj.data = this.data;
+	if(this.privateData && options.includePrivateData) obj.privateData = this.privateData;
+	if(this.stack && options.includeStack) obj.stack = this.stack;
+	if(options.extraFields) {
+		for(i = 0; i < options.extraFields.length; i++) {
+			if(this[options.extraFields[i]]) {
+				obj[options.extraFields[i]] = this[options.extraFields[i]];
+			}
+		}
+	}
+	if(this.cause) {
+		if(typeof this.cause.toObject === 'function') {
+			obj.cause = this.cause.toObject(options);
+		} else if(this.cause.code || this.cause.message) {
+			obj.cause = XError.prototype.toObject.call(this.cause, options);
+		} else {
+			obj.cause = {
+				message: '' + this.cause
+			};
+		}
+	}
+	return obj;
+};
+
+/**
+ * Instantiates and returns a new XError object from the given object.
+ *
+ * @param {Object} obj
+ * @return {XError}
+ */
+XError.fromObject = function(obj) {
+	var cause = null;
+	if(obj.cause) {
+		cause = XError.fromObject(obj.cause);
+	}
+	return new XError(obj.code || null, obj.message || null, obj.data || null, obj.privateData || null, cause || null);
 };
 
 /**
@@ -115,20 +180,10 @@ XError.wrap = function(error, message) {
 };
 
 XError.registerErrorCode = registry.registerErrorCode;
+XError.registerErrorCodes = registry.registerErrorCodes;
 XError.getErrorCode = registry.getErrorCode;
 XError.listErrorCodes = registry.listErrorCodes;
 
 XError.create = XError.wrap;
-
-// Inherit from Error
-XError.super_ = Error;
-XError.prototype = Object.create(Error.prototype, {
-  constructor: {
-    value: XError,
-    enumerable: false,
-    writable: true,
-    configurable: true
-  }
-});
 
 module.exports = XError;
