@@ -1,3 +1,5 @@
+var registry = require('./error-code-registry');
+
 var codes = {
 	access_denied:		{ message: 'Access Denied', http: 403 },
 	already_exists:		{ message: 'Already Exists', http: 409 },
@@ -12,7 +14,8 @@ var codes = {
 	invalid_argument:	{ message: 'Invalid data passed to function', http: 401 }
 };
 
-var registry = require('./error-code-registry');
-for(var code in codes) {
-	registry.registerErrorCode(code, codes[code]);
-}
+module.exports = function() {
+	for(var code in codes) {
+		registry.registerErrorCode(code, codes[code]);
+	}
+};

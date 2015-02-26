@@ -1,5 +1,5 @@
 var registry = require('./error-code-registry');
-require('./common-error-codes');
+require('./common-error-codes')();
 
 /**
  * Construct a Extended Error instance.
