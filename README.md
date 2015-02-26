@@ -32,6 +32,8 @@ can be either an XError or an Error.
 ## Constructing
 
 ````javascript
+var XError = require('xerror');
+
 // Constructs an XError object with the NOT_FOUND error code and
 // default message for that error code.
 new XError(XError.NOT_FOUND);
