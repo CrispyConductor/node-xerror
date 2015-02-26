@@ -7,7 +7,9 @@ error codes and handling.  It inherits from Error and is compatible with it.
 
 XError objects contain a machine-readable error code as well as a human-readable message.  By convention,
 error codes are lowercase, underscore_separated strings, such as `internal_error`.  Registered error
-codes are available as constants on the XError object, with the names uppercased.
+codes are available as constants on the XError object, with the names uppercased.  The common error
+codes are listed [here](https://github.com/crispy1989/node-xerror/blob/master/common-error-codes.js)
+and you can register your own (see below).
 
 ## Data
 
