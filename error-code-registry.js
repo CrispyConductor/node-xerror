@@ -13,8 +13,17 @@ if(!registry) {
 
 
 /**
+ * Central registry for error codes.
+ *
+ * @class ErrorCodeRegistry
+ */
+
+
+/**
  * Registers an error code with the central registry.
  *
+ * @method registerErrorCode
+ * @static
  * @param {String} code - The error code to register
  * @param {Object} fields - Informational fields about the error
  * @param {String} [fields.message] - Error message associated with the code
@@ -52,6 +61,8 @@ exports.registerErrorCode = function(code, fields, version) {
 /**
  * Register multiple error codes at the same time.
  *
+ * @method registerErrorCodes
+ * @static
  * @param {Object} codes - Mapping from code strings to fields
  * @param {Number} version
  */
@@ -66,6 +77,8 @@ exports.registerErrorCodes = function(codes, version) {
  * 'code' (useful if the error code is aliased to a different code), 'message' (default
  * error message), 'http' (associated http code).  Any of these fields may be missing.
  *
+ * @method getErrorCode
+ * @static
  * @param {String} code - The error code to fetch
  * @return {Object} - Information about the returned error
  */
@@ -83,6 +96,8 @@ exports.getErrorCode = function(code) {
 /**
  * Returns a list of error code strings.
  *
+ * @method listErrorCodes
+ * @static
  * @return {String[]} - List of error codes
  */
 exports.listErrorCodes = function() {
@@ -93,6 +108,8 @@ exports.listErrorCodes = function() {
  * Add an XError constructor to the list.  Used to manage different versions
  * of XError.
  *
+ * @method addXError
+ * @static
  * @param {Function} XError - XError constructor
  */
 exports.addXError = function(XError) {

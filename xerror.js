@@ -9,6 +9,7 @@ require('./common-error-codes')();
  * @class XError
  * @constructor
  * @extends Error
+ * @uses ErrorCodeRegistry
  * @param {String} [code="internal_error"] - The error code of the error.  These are short string codes.  They may not contain spaces.
  * @param {String} [message] - Human-readable error message.
  * @param {Object} [data] - Additional data about the error.
@@ -100,6 +101,7 @@ XError.prototype.toString = function() {
  * Converts the information inside this XError object into a plain object suitable
  * for stringifying or otherwise transmitting.
  *
+ * @method toObject
  * @param {Object} [options] - Options regarding the conversion
  * @param {Boolean} [options.includePrivateData]
  * @param {Boolean} [options.includeStack]
@@ -139,6 +141,8 @@ XError.prototype.toObject = function(options) {
 /**
  * Instantiates and returns a new XError object from the given object.
  *
+ * @method fromObject
+ * @static
  * @param {Object} obj
  * @return {XError}
  */
@@ -153,6 +157,8 @@ XError.fromObject = function(obj) {
 /**
  * Returns true iff the given value is an instance of a XError.
  *
+ * @method isXError
+ * @static
  * @param {Mixed} o - Thing to determine if it's an XError
  * @return {Boolean}
  */
@@ -169,6 +175,12 @@ XError.isXError = function(o) {
  * This is useful to wrap errors that occur in a deep layer with shallower-layer errors to provide a more
  * informative error message to the user.  It also has the effect of adding a stack track, which can help
  * in debugging.
+ *
+ * @method wrap
+ * @static
+ * @param {Error|ZSError} error - Error to wrap
+ * @param {String} [message] - Optional message override
+ * @return {ZSError} - Wrapped ZSError
  */
 XError.wrap = function(error, message) {
 	if(!error) return error;
