@@ -54,7 +54,7 @@ exports.registerErrorCode = function(code, fields, version) {
 	}
 	registry.codes[code].code = code;
 	registry.xerrors.forEach(function(XError) {
-		XError[code.toUpperCase()] = code;
+		XError[code] = code;
 	});
 };
 

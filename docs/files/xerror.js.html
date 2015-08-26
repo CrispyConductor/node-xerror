@@ -162,7 +162,7 @@ XError.prototype = Object.create(Error.prototype, {
 
 // Register code accessors on the error object
 registry.listErrorCodes().forEach(function(code) {
-	XError[code.toUpperCase()] = code;
+	XError[code] = code;
 });
 registry.addXError(XError);
 
