@@ -11,7 +11,8 @@ var codes = {
 	unsupported_operation: { message: 'Operation not supported', http: 404 },
 	limit_exceeded: { message: 'Limit exceeded', http: 503 },
 	not_modified: { message: 'Not modified', http: 304 },
-	invalid_argument: { message: 'Invalid data passed to function', http: 401 }
+	invalid_argument: { message: 'Invalid data passed to function', http: 401 },
+	conflict: { message: 'Data conflict', http: 409 }
 };
 
 module.exports = function() {
