@@ -17,7 +17,8 @@ require('./common-error-codes')();
  * @param {Error|XError} [cause] - The error which caused this error.  Used to create error cause chains.
  */
 function XError(/*code, message, data, privateData, cause*/) {
-	Error.captureStackTrace(this, this);
+	if (Error.captureStackTrace) Error.captureStackTrace(this, this);
+	else this.stack = new Error().stack;
 
 	var code, message, data, cause, privateData;
 
