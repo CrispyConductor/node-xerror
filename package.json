@@ -1,6 +1,6 @@
 {
   "name": "xerror",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Error wrapper including things like error code, data, and cause for Node.JS",
   "main": "./xerror.js",
   "repository": {

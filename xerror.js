@@ -152,7 +152,13 @@ XError.fromObject = function(obj) {
 	if(obj.cause) {
 		cause = XError.fromObject(obj.cause);
 	}
-	return new XError(obj.code || null, obj.message || null, obj.data || null, obj.privateData || null, cause || null);
+	var xerror = new XError(obj.code || null, obj.message || null, obj.data || null, obj.privateData || null, cause || null);
+	if(obj.stack) {
+		xerror.stack = obj.stack;
+	} else {
+		delete xerror.stack;
+	}
+	return xerror;
 };
 
 /**
